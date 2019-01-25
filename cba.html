@@ -6,17 +6,16 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <link href="jquery-ui.min.css" rel="stylesheet" type="text/css">
-<link href="css/cba.css" rel="stylesheet" type="text/css">
+<link href="style.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-<script type="text/javascript" src="jquery-ui.min.js"></script>
 </head>
 
 <body class="med-gray">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="nav1">
-		<a class="navbar-brand" href="#">BuildingLink</a>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary no-print" id="nav1">
+		<a class="navbar-brand" href="#"><img src="logos/logo-BuildingLink-RGB-White.png" alt="BuildingLink logo"></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -37,23 +36,24 @@
 			</form>
 		</div>
 	</nav>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav2">
-		<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-			<span id="print-btn"><i class="icon-btn fas fa-print icon-med text-primary"></i></span>
-			<li class="">
-				<span id="edit-btn" class=""><i class="icon-btn far fa-edit icon-med text-primary icon-med text-primary"></i></span>
-			</li>
-			<li class="">
-				<span id="save-btn"><i class="icon-btn far fa-save icon-med text-primary"></i></span>
-			</li>
-			<li class="">
-				<span id="settings-btn" data-toggle="modal" data-target="#settings-modal"><i class="icon-btn fas fa-cog icon-med text-primary"></i></span>
-			</li>
-		</ul>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light no-print" id="nav2">
+		<div class="btn-group">
+			<button data-toggle="tooltip" data-placement="bottom" title="Print"><span id="print-btn"><i class="icon-btn fas fa-print icon-med text-primary"></i></span></button>
+			<button data-toggle="tooltip" data-placement="bottom" title="View as Print"><span id="print-view-btn"><i class="icon-btn far fa-eye icon-med text-primary"></i></span></button>
+			<button data-toggle="tooltip" data-placement="bottom" title="Edit"><span id="edit-btn" class=""><i class="icon-btn far fa-edit icon-med text-primary icon-med text-primary"></i></span></button>
+			<button data-toggle="tooltip" data-placement="bottom" title="Save"><span id="save-btn"><i class="icon-btn far fa-save icon-med text-primary"></i></span></button>
+			<button data-toggle="tooltip" data-placement="bottom" title="Settings"><span id="settings-btn" data-toggle="modal" data-target="#settings-modal"><i class="icon-btn fas fa-cog icon-med text-primary"></i></span></button>
+		</div>
 	</nav>
+
+	<div class="bg-light print-container" id="print-container">
+		<div><img id="BLLogoId" src="logos/building-logos/CooperAndCooper.jpg" alt="building logo"></div>
+		<br>
+		<h2 style="font-weight: 100;">Cost benefit analysis prepared for <span id="blg-name2">Default</span> by <span id="name-id2">default</span> from BuildingLink.</h2>
+	</div>
 	
 <section class="container-fluid">
-		
+	<div class="remove-on-print-view">	
 	<div class="card-group">
 	  <div class="card">
 		<div class="card-header"><h2 class="card-title">Cost Benefit Analysis for <span id="blg-name"></span></h2></div>
@@ -95,18 +95,18 @@
 			  </label>
 			</div>
 			<br>
-			<button id="clear-btn" class="btn btn-outline-primary btn-sm">Clear list<i class="icon fas fa-trash-alt"></i></button>
-			<button id="open-all-btn" class="btn btn-outline-primary btn-sm">Check All<i class="icon fas fa-check-double"></i></button>
-			<button id="notes-btn" class="btn btn-outline-primary btn-sm">Notes<i class="icon far fa-sticky-note"></i></button>
-			<button id="save" class="btn btn-outline-primary btn-sm">Save Notes</button>
+			<button id="clear-btn" class="btn cba-btn btn-outline-primary btn-sm">Clear list<i class="icon fas fa-trash-alt"></i></button>
+			<button id="open-all-btn" class="btn cba-btn btn-outline-primary btn-sm">Check All<i class="icon fas fa-check-double"></i></button>
+			<button id="notes-btn" class="btn cba-btn btn-outline-primary btn-sm">Notes<i class="icon far fa-sticky-note"></i></button>
+			<button id="save" class="btn cba-btn btn-outline-primary btn-sm">Save Notes</button>
 			<div id="notes"></div>
 		</div>
 		<div class="card-footer">
-		  <small class="text-muted">User: user1</small>
+		  <small class="text-muted" id="name-id">User: user1</small>
 		</div>
 	  </div>
 
-	  <div class="card">
+	  <div class="card" style="margin-right: 0px;">
 		<div class="card-header"><h2 class="card-title">Summary</h2></div>
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item"><div class="row"><div class="col-sm-6 bold">Total Annual Savings: </div><div class="col-sm-6" id="total-summary">$100</div></div></li>
@@ -121,6 +121,7 @@
 		   <small class="text-muted">Last updated 3 mins ago</small>
 		 </div>
 	  </div>
+  	</div>
 
 	</div>				
 	<!-- Dynamic content -->
@@ -133,7 +134,7 @@
 	</div>	
 
 	<!-- Dropdown -->
-	<button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+	<button class="btn btn-outline-primary btn-sm remove-on-print-view" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 		View calculation info<i class="icon fas fa-angle-down"></i>
 	</button>
 	<div class="collapse" id="collapseExample">
@@ -170,9 +171,7 @@
 			  <label class="form-check-label" for="setting-pop">
 				Allow pop-up notifications
 			  </label>
-			  <br><br>Building Name
-			  <label class="sr-only" for="setting-blg-name">Building Name</label>
-			  <input type="text" class="form-control mb-2 mr-sm-2" id="setting-blg-name" placeholder="Example Building">
+			  <br>
 			  <br>Units
 			  <input type="text" class="form-control" id="setting-units" placeholder="300">
 			  <br>Hourly rate
@@ -180,7 +179,13 @@
 			  <br>User-name
 			  <input type="text" class="form-control" id="settings-user" placeholder="user1">
 			</div>
-        </div>
+			<br>
+			<div class="form-group">
+			    <label for="logoSelect">Select Building</label>
+			    <select class="form-control" id="logoSelect">
+
+			    </select>
+		   </div>
         <div class="modal-footer">
 		  <button type="button" class="btn btn-default" id="settings-save-btn" data-dismiss="modal">Save</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -189,7 +194,8 @@
       
     </div>
   </div>
+</div>
 <!--<footer class="footer gray" id="footer"></footer> -->
-<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" src="script.js"></script>
 </body>
 </html>
