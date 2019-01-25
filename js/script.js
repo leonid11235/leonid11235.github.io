@@ -11,7 +11,9 @@ Do pop ups really need to be dynamic??
 Make check array event listeners into an array
 Set up calculations to be smarter
 EditState inefficient 
-Add level of abstraction - Program is getting to big and confusing
+Add level of abstraaction - Classes 
+Dont allow checkbox changes or setting changes in edit mode
+Disable edit button in editmode
 ************/
 
 /*************************
@@ -28,7 +30,7 @@ const editableText = document.getElementsByClassName("editable-text");	// Doesnt
 const editableNum = document.getElementsByClassName("editable-num");
 const editBtn = document.getElementById("edit-btn");
 const saveBtn = document.getElementById("save-btn");
-//const editIndicator = document.getElementById("edit-mode");
+const printViewBtn = document.getElementById("print-view-btn");
 const totalBoxArray = document.getElementsByClassName("totalBoxes");
 const totalSummary = document.getElementById("total-summary");
 const subFee = document.getElementById("sub-fee");
@@ -38,6 +40,10 @@ const settingsBtn = document.getElementById("settings-btn");
 const settingsSaveBtn = document.getElementById("settings-save-btn");
 var iterator = 0;
 var isEditState = false;
+var logoSelect = document.getElementById("logoSelect");
+var BLSelected = "default";
+
+var printViewState = 0;
 
 // Array of functions
 var addBoxArray = [
@@ -58,6 +64,16 @@ var boxIDs = [
 	"box5",
 	"box6",
 ];
+
+var isOpened = [
+	false,
+	false,
+	false,
+	false,
+	false,
+	false
+];
+
 /*************************/
 /* Calculation and setting variables 
 /*************************/
@@ -65,23 +81,45 @@ var unitCost = 2;
 var months = 12;
 var vs1 = document.getElementById("vs1");
 var hoursSavedPT = 375;
-var hoursSavedPMR = 87;
-var blgName = "default";
+var hoursSavedMR = 87;
+var hoursSavedTC = 260;
+var hoursSavedRC = 87.5;
+var hoursSavedTCRD = 104;
+var hoursSavedS = 730;
 var popUps = true;
 var units = 350;
 var hourly = 20;
 var direct1 = 600;
+var direct2 = 250;
+var direct3 = 0;
+var direct4 = 0;
+var direct5 = 2500;
+var direct6 = 0; 
 var user = "user1";
 
 var packageSavings = hoursSavedPT * hourly;
 var packageSummary = packageSavings + direct1;
 
+var repairSavings = hoursSavedMR * hourly;
+var repairSummary = repairSavings + direct2;
+
+var timeSavings = hoursSavedTC * hourly;
+var timeSummary = timeSavings + direct3;
+
+var residentSavings = hoursSavedRC * hourly;
+var residentSummary = residentSavings + direct4;
+
+var reportingSavings = hoursSavedTCRD * hourly;
+var reportingSummary = reportingSavings + direct5;
+
+var securitySavings = hoursSavedS * hourly;
+var securitySummary = securitySavings + direct6;
+
 // Settings id's
 var sett_alert = document.getElementById('setting-pop');
-var sett_blg_name = document.getElementById('setting-blg-name');
 var sett_units = document.getElementById('setting-units');
-var sett_hourly = document.getElementById('setting-hourly');
-var sett_user = document.getElementById('setting-user');
+var sett_hourly = document.getElementById('settings-hourly');
+var sett_user = document.getElementById('settings-user');
 
 /*************************
 /* EVENTLISTENERS
@@ -171,6 +209,7 @@ printBtn.addEventListener('click', printPage);
 saveBtn.addEventListener('click', saveState);
 settingsBtn.addEventListener('click', loadSettings);
 settingsSaveBtn.addEventListener('click', saveSettings);
+printViewBtn.addEventListener('click', togglePrintView);
 
 // Run this before any work is done
 init();
@@ -182,10 +221,11 @@ function init() {
 	emptyBoxes();
 	checkFirstCheck();
 	subFeeCalc();
-	$("#blg-name").html(blgName);
-	$("#hours-saved").html(hoursSavedPT);
 	$("#rate").html(hourly);
 	$("#package-savings").html(packageSavings);
+	$("#name-id").html("User: " + user);
+	$("#blg-name").html(BLSelected);
+	$("#blg-name2").html(BLSelected);
 }
 
 /*************************
@@ -195,7 +235,7 @@ function init() {
 function editState() {
 	isEditState = true;
 	$("#nav1").removeClass("bg-primary");
-	$("#nav1").addClass("bg-success");
+	$("#nav1").addClass("edit-color");
 	
 	for ( var i = 0; i < editableText.length; i++ ) {
 		editableText[i].contentEditable = "true";
@@ -206,36 +246,39 @@ function editState() {
 		editableNum[j].contentEditable = "true";
 		editableNum[j].classList.add("focus-blue");
 	}
-	// Prevents user from entering letters in hours input
+	// Prevents user from entering letters or pressing "enter" in hours input
 	$(".editable-num").keypress(function(e) {
-    	if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+    	if (isNaN(String.fromCharCode(e.which)) || e.which === 13) e.preventDefault();
 	});
-	console.log("editState function: " + editableText[0].contentEditable);
-	//editIndicator.style.display = "block";
+
+	// Prevents user from pressing "enter" on text edits
+	$(".editable-text").keypress(function(e) {
+    	if (e.which === 13) e.preventDefault();
+	});
+
 	$("#nav1").removeClass("bg-primary");
-	$("#nav1").addClass("bg-success");
-	
-	// Buiding name logic
+	$("#nav1").addClass("edit-color");
 }
 
 // Loads the settings from the variables declared above
 function loadSettings() {
 	sett_alert.checked = popUps;
-	sett_blg_name.value = blgName;
 	sett_units.value = units;
-	//sett_hourly.value = hourly;
+	sett_user.value = user;
+	sett_hourly.value = hourly;
 }
 
 // Save the settings 
 function saveSettings() {
 	popUps = sett_alert.checked;
-	blgName = sett_blg_name.value;
+	BLSelected = logoSelect.value;
 	units = sett_units.value;
-	//hourly = sett_hourly.value;
+	user = sett_user.value;
+	hourly = sett_hourly.value;
 	
 	// Alert user of action
 	var d = new Date();
-	alertFunc("Settings saved", d);
+	alertFunc("Settings Saved", d);
 	
 	// Apply the saved changes
 	applySavedChanges();
@@ -253,7 +296,10 @@ function resetToDefault() {
 
 // Apply saved changes to settings
 function applySavedChanges() {
-	$("#blg-name").html(blgName);
+	$("#blg-name").html(BLSelected);
+	$("#blg-name2").html(BLSelected);
+	$("#name-id").html("User: " + user);
+	subFeeCalc();
 }
 
 function saveState() {
@@ -267,28 +313,54 @@ function saveState() {
 		editableNum[j].contentEditable = "false";
 		editableNum[j].classList.remove("focus-blue");
 	}
-	console.log("saveState function: " + editableText[0].contentEditable);
-	//editIndicator.style.display = "none";
 	
 	var d = new Date();
 	alertFunc("Changes Saved!", d);
 	console.log("Changes saved on: " + d);
 	
-	$("#nav1").removeClass("bg-success");
+	$("#nav1").removeClass("edit-color");
 	$("#nav1").addClass("bg-primary");
 	
-	// Save variables for box1
-	hoursSavedPT = document.getElementById("timeSave1").innerHTML; 
-	// Redo calculations after variable changed
-	boxCalculations1();
-	// Fill Values for box1
-	fillValues1();
-	
-	// Save variables for box2
-	// Save variables for box2
-	// Save variables for box4
-	// Save variables for box5
-	// Save variables for box6
+	// Save cofiguration only if the box was checked
+	if (checkArray[0].checked) {
+		// Save variables for boxes
+		hoursSavedPT = document.getElementById("timeSave1").innerHTML; 
+		direct1 = document.getElementById("direct1").innerHTML; 
+		// Redo calculations after variable changed
+		boxCalculations1();
+		// Fill Values for box
+		fillValues1();
+	}
+	if (checkArray[1].checked) {
+		hoursSavedMR = document.getElementById("timeSave2").innerHTML; 
+		direct2 = document.getElementById("direct2").innerHTML; 
+		boxCalculations2();
+		fillValues2();
+	}
+	if (checkArray[2].checked) {
+		hoursSavedTC = document.getElementById("timeSave3").innerHTML; 
+		direct3 = document.getElementById("direct3").innerHTML; 
+		boxCalculations2();
+		fillValues2();
+	}
+	if (checkArray[3].checked) {
+		hoursSavedRC = document.getElementById("timeSave4").innerHTML; 
+		direct4 = document.getElementById("direct4").innerHTML; 
+		boxCalculations4();
+		fillValues4();
+	}
+	if (checkArray[4].checked) {
+		hoursSavedTCRD = document.getElementById("timeSave5").innerHTML; 
+		direct5 = document.getElementById("direct5").innerHTML; 
+		boxCalculations5();
+		fillValues5();
+	}
+	if (checkArray[5].checked) {
+		hoursSavedS = document.getElementById("timeSave6").innerHTML; 
+		direct6 = document.getElementById("direct6").innerHTML; 
+		boxCalculations6();
+		fillValues6();
+	}
 	
 	calcSummary();
 }
@@ -332,12 +404,47 @@ function printPage() {
 	window.print();
 }
 
+// Function to set the page state to "Print view"
+function togglePrintView() {
+	var elementsToRemove = document.getElementsByClassName("remove-on-print-view");
+	if (!printViewState) {
+		document.getElementById("print-container").style.display = "block";
+		elementsToRemove[0].style.display = "none";
+		elementsToRemove[1].style.display = "none";
+		printViewState = 1;
+	} else {
+		// Maybe load both at the same time??
+		elementsToRemove[0].style.display = "block";
+		elementsToRemove[1].style.display = "block";
+		document.getElementById("print-container").style.display = "none";
+		printViewState = 0;
+	}
+	// When hidden content appears, insert BLName into HTML spans
+	displayBLName();
+}
+
+// Function to check if an array of checkboxes
+// has at least one checked box
+function ifOneChecked(checkboxArray) {
+	var answer = false;
+	for(var i = 0; i < checkboxArray.length; i++)
+    {
+        if(checkboxArray[i].checked)
+        {
+            answer = true;
+            break;
+        }
+    }
+	return answer;
+}
+
 // Function to pop up alerts when event occurs
 // Takes the text to display and the time it happened
 function alertFunc(text, d) {
 	if (popUps) {
-		var alertObj = '<div class="alert alert-success alert-dismissible fade show in" role="alert">' + text + ' ' + d + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+		var alertObj = '<div class="alert alert-success alert-dismissible fade show in" role="alert">' + text + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 		$("body").append(alertObj);
+		console.log("Changes saved on: " + d);
 		setTimeout(function(){
 		  $(".alert").hide('slow');
 		}, 3000);
@@ -369,19 +476,20 @@ function addBox1(id) {
 					'<li class="list-group-item">'+
 						'Direct cost savings: '+
 						'<span class="float-right">'+
-							'$<span id="direct1" class="">0</span>'+
+							'$<span id="direct1" class="editable-num">0</span>'+
 						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Total monetary savings: '+
 						'<span class="float-right">'+
-							'$<span id="packageSummary" class="totalBoxes">500</span>'+
+							'$<span id="packageSummary" class="totalBoxes">0</span>'+
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-body">Id: ' + id + '</div>'+
+			'<div class="card-footer"></div>'+
 		'</div>';
 	$(".box-container").append(obj);
+	boxCalculations1();
 	fillValues1();
 	calcSummary();
 	if (isEditState)
@@ -404,20 +512,29 @@ function addBox2(id) {
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Value of time saved: '+
+						'<span class="float-right">'+
+							'$<span id="vs2" class="valueSaved">0</span>'+
+						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Direct cost savings: '+
+						'<span class="float-right">'+
+							'$<span id="direct2" class="editable-num">0</span>'+
+						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Total monetary savings: '+
 						'<span class="float-right">'+
-							'$<span id="repairSummary" class="totalBoxes">3000</span>'+
+							'$<span id="repairSummary" class="totalBoxes">0</span>'+
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-body">Id: ' + id + '</div>'+
+			'<div class="card-footer"></div>'+
+			//'<div class="card-body">Id: ' + id + '</div>'+
 		'</div>';
-	$(".box-container").append(obj);	
+	$(".box-container").append(obj);
+	boxCalculations2();
+	fillValues2();
 	calcSummary();
 	if (isEditState)
 		editState();
@@ -439,20 +556,28 @@ function addBox3(id) {
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Value of time saved: '+
+						'<span class="float-right">'+
+							'$<span id="vs3" class="valueSaved">0</span>'+
+						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Direct cost savings: '+
+						'<span class="float-right">'+
+							'$<span id="direct3" class="editable-num">0</span>'+
+						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Total monetary savings: '+
 						'<span class="float-right">'+
-							'$<span id="clockSummary" class="totalBoxes">3000</span>'+
+							'$<span id="timeSummary" class="totalBoxes">0</span>'+
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-body">Id: ' + id + '</div>'+
+			'<div class="card-footer"></div>'+
 		'</div>';
 	$(".box-container").append(obj);
+	boxCalculations3();
+	fillValues3();
 	calcSummary();
 	if (isEditState)
 		editState();
@@ -474,20 +599,28 @@ function addBox4(id) {
 						'</li>'+
 						'<li class="list-group-item">'+
 							'Value of time saved: '+
+							'<span class="float-right">'+
+								'$<span id="vs4" class="valueSaved">0</span>'+
+							'</span>'+
 						'</li>'+
 						'<li class="list-group-item">'+
 							'Direct cost savings: '+
+							'<span class="float-right">'+
+								'$<span id="direct4" class="editable-num">0</span>'+
+							'</span>'+
 						'</li>'+
 						'<li class="list-group-item">'+
 							'Total monetary savings: '+
 							'<span class="float-right">'+
-								'$<span id="residentSummary" class="totalBoxes">3000</span>'+
+								'$<span id="residentSummary" class="totalBoxes">0</span>'+
 							'</span>'+
 						'</li>'+
 					'</ul>'+
-				'<div class="card-body">Id: ' + id + '</div>'+
+				'<div class="card-footer"></div>'+
 			'</div>';
 	$(".box-container").append(obj);
+	boxCalculations4();
+	fillValues4();
 	calcSummary();
 	if (isEditState)
 		editState();
@@ -509,20 +642,28 @@ function addBox5(id) {
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Value of time saved: '+
+						'<span class="float-right">'+
+							'$<span id="vs5" class="valueSaved">0</span>'+
+						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Direct cost savings: '+
+						'<span class="float-right">'+
+								'$<span id="direct5" class="editable-num">0</span>'+
+						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Total monetary savings: '+
 						'<span class="float-right">'+
-							'$<span id="reportingSummary" class="totalBoxes">3000</span>'+
+							'$<span id="reportingSummary" class="totalBoxes">0</span>'+
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-body">Id: ' + id + '</div>'+
+			'<div class="card-footer"></div>'+
 		'</div>';
 	$(".box-container").append(obj);
+	boxCalculations5();
+	fillValues5();
 	calcSummary();
 	if (isEditState)
 		editState();
@@ -544,20 +685,28 @@ function addBox6(id) {
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Value of time saved: '+
+						'<span class="float-right">'+
+							'$<span id="vs6" class="valueSaved">0</span>'+
+						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Direct cost savings: '+
+						'<span class="float-right">'+
+								'$<span id="direct6" class="editable-num">0</span>'+
+						'</span>'+
 					'</li>'+
 					'<li class="list-group-item">'+
 						'Total monetary savings: '+
 						'<span class="float-right">'+
-							'$<span id="securitySummary" class="totalBoxes">3000</span>'+
+							'$<span id="securitySummary" class="totalBoxes">0</span>'+
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-body">Id: ' + id + '</div>'+
+			'<div class="card-footer"></div>'+
 		'</div>';	
 	$(".box-container").append(obj);
+	boxCalculations6();
+	fillValues6();
 	calcSummary();
 	if (isEditState)
 		editState();
@@ -572,21 +721,43 @@ function addBox6(id) {
 function fillValues1() {
 	$("#timeSave1").html(hoursSavedPT);
 	$("#vs1").html(packageSavings);
-	$("#packageSummary").html(packageSummary);
 	$("#direct1").html(direct1);
+	$("#packageSummary").html(packageSummary);
 }
 
 function fillValues2() {
-	
+	$("#timeSave2").html(hoursSavedMR);
+	$("#direct2").html(direct2);
+	$("#vs2").html(repairSavings);
+	$("#repairSummary").html(repairSummary);
 }
 
 function fillValues3() {
-	
+	$("#timeSave3").html(hoursSavedTC);
+	$("#vs3").html(timeSavings);
+	$("#direct3").html(direct3);
+	$("#timeSummary").html(timeSummary);
 }
 
-// Update the dropdown 
-function updateDropdown() {
-	
+function fillValues4() {
+	$("#timeSave4").html(hoursSavedRC);
+	$("#vs4").html(residentSavings);
+	$("#direct4").html(direct4);
+	$("#residentSummary").html(residentSummary);	
+}
+
+function fillValues5() {
+	$("#timeSave5").html(hoursSavedTCRD);
+	$("#vs5").html(reportingSavings);
+	$("#direct5").html(direct5);
+	$("#reportingSummary").html(reportingSummary);	
+}
+
+function fillValues6() {
+	$("#timeSave6").html(hoursSavedS);
+	$("#vs6").html(securitySavings);
+	$("#direct6").html(direct6);
+	$("#securitySummary").html(securitySummary);	
 }
 
 /*************************
@@ -600,9 +771,9 @@ function calcSummary() {
 		summaryTotal += totalNum;
 		console.log(summaryTotal);
 	}
-	totalSummary.innerHTML = "$" + summaryTotal;
+	totalSummary.innerHTML = "$" + addCommas(summaryTotal);
 	var netAnnual = summaryTotal - subFeeTotal;
-	netSumID.innerHTML = "$" + netAnnual;
+	netSumID.innerHTML = "$" + addCommas(netAnnual);
 	
 	var d = new Date();
 	$("#date-update").html(d);
@@ -612,13 +783,91 @@ function calcSummary() {
 // Example: when edits are made and saved
 function boxCalculations1() {
 	packageSavings = hoursSavedPT * hourly;
-    packageSummary = packageSavings + direct1;
+    packageSummary = packageSavings + parseInt(direct1);
+}
+
+function boxCalculations2() {
+	repairSavings = hoursSavedMR * hourly;
+	repairSummary = repairSavings + parseInt(direct2);
+}
+
+function boxCalculations3() {
+	timeSavings = hoursSavedTC * hourly;
+	timeSummary = timeSavings + parseInt(direct3);
+}
+
+function boxCalculations4() {
+	residentSavings = hoursSavedRC * hourly;
+	residentSummary = residentSavings + parseInt(direct4);
+}
+
+function boxCalculations5() {
+	reportingSavings = hoursSavedTCRD * hourly;
+	reportingSummary = reportingSavings + parseInt(direct5);
+}
+
+function boxCalculations6() {
+	securitySavings = hoursSavedS * hourly;
+	securitySummary = securitySavings + parseInt(direct6);
 }
 
 // Calculates yearly subscrription fee
 function subFeeCalc() {
 	subFeeTotal = unitCost * units * months;
-	subFee.innerHTML = "$" + subFeeTotal;
+	subFee.innerHTML = "$" + addCommas(subFeeTotal);
+}
+
+// Add commas when outputting calculations
+function addCommas(number) {
+	return (number).toLocaleString('en');
+}
+
+/*************************
+/* BUILDING 
+/*************************/
+var buildings = [{
+	BLLogo: "CooperAndCooper.jpg",
+	BLName: "Cooper And Cooper"
+}, {
+	BLLogo: "Extell.png",
+	BLName: "Extell"
+}]
+
+// Call function to append building names 
+appendBuildingToList(buildings);
+
+// Function to append building names to a list
+function appendBuildingToList(buildings) {
+	var logoSelectItem;
+	for (var i = 0; i < buildings.length; i++) {
+		logoSelectItem = document.createElement("option");
+		logoSelectItem.innerHTML = buildings[i].BLName;
+		logoSelect.appendChild(logoSelectItem);
+	}
+}
+
+// Logic for when user changes building name
+logoSelect.addEventListener("change", function () {
+	// Change the logo
+	if (logoSelect.value == "Extell") {
+		displayLogo(buildings[1].BLLogo);
+	}
+	if (logoSelect.value == "Cooper And Cooper") {
+		displayLogo(buildings[0].BLLogo);
+	}
+	// Change the string name whereever necessary
+});
+
+function displayLogo(logoSRC) {
+	var path = "logos/building-logos/";
+	var logoHolder = document.getElementById("BLLogoId");
+	logoHolder.src = path + logoSRC;
+}
+
+function displayBLName() {
+	$("#blg-name").html(BLSelected);
+	$("#blg-name2").html(BLSelected);
+	$("#name-id2").html(user);
 }
 
 /*************************
@@ -683,8 +932,11 @@ $('#save').click(function(){
     console.log("Notes: " + notes);
 });
 
+// Tooltips
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+})
+
 /*************************
 /* Tutorial 
 /*************************/
-
-
