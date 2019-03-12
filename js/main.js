@@ -219,3 +219,44 @@ modalBtn1.addEventListener('click', function() {
 $('.close').click(function(){
 	singleProjectContent.removeClass('is-visible');
 });
+
+// LEO'S CODE
+
+// This JavaScript object holds data for the cards
+var cardsObj = {
+	// Data
+	cards: [
+		{id: 1, title: "Cost Benefit Analysis", filter: "color-1", img: "image.png", modalId: 1},
+		{id: 3, title: "game", filter: "color-2", img: "image.png", modalId: 1},
+		{id: 2, title: "To-do list", filter: "color-1", img: "image.png", modalId: 1}
+	],
+	// Methods
+	appendCards: function() {
+		// Loop through the cards array
+	},
+	openModal: function(num) {
+		// Toggle openeing/closing target modal
+		alert(num);
+	}
+};
+
+// Dynamically create cards 
+var card = `<p onClick="cardsObj.openModal(cardsObj.cards[0].modalId)" >Title: ${cardsObj.cards[0].title}</p><p>ID: ${cardsObj.cards[1].id}</p>`;
+
+var cardTemplateString = `
+<li class="mix color-5 check1 radio2 option3">
+<div class="card">
+	<img class="card-img-top" src="img/img-1.jpg" alt="Card image cap">
+	<div class="card-body">
+	<h5 class="card-title">Newsletter Archive</h5>
+		<p class="card-text">A newsletter archive for the BuildingLink public website.</p>
+	</div>
+	<div class="card-footer">
+		<small class="text-muted">Added 3 mins ago</small><a href="cba.html"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true">LINK</span></a><button id="open1">Open</button>
+	</div>
+</div>
+</li>
+`;
+document.getElementById('test-container').innerHTML = card;
+
+// How do we map this array to 
