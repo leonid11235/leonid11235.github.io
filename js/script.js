@@ -859,7 +859,7 @@ logoSelect.addEventListener("change", function () {
 });
 
 function displayLogo(logoSRC) {
-	var path = "logos/building-logos/";
+	var path = "img/cba/building-logos/";
 	var logoHolder = document.getElementById("BLLogoId");
 	logoHolder.src = path + logoSRC;
 }
