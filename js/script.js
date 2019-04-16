@@ -451,6 +451,10 @@ function alertFunc(text, d) {
 	}
 }
 
+function toggleDisabled(toToggle) {
+	$("#menuContinenti").prop('disabled', function (_, val) { return ! val; });
+}
+
 /* FUNCTIONS TO ADD CARDS */
 
 function addBox1(id) {
