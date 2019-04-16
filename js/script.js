@@ -823,7 +823,7 @@ function addCommas(number) {
 }
 
 /*************************
-/* BUILDING 
+/* BUILDINGS
 /*************************/
 var buildings = [{
 	BLLogo: "CooperAndCooper.jpg",
