@@ -43,7 +43,9 @@ var isEditState = false;
 var logoSelect = document.getElementById("logoSelect");
 var BLSelected = "default";
 
+// Control variables
 var printViewState = 0;
+var editBtnDisabled = 0;
 
 // Array of functions
 var addBoxArray = [
@@ -233,31 +235,34 @@ function init() {
 /* Makes text editable and adds borders
 /*************************/
 function editState() {
-	isEditState = true;
-	$("#nav1").removeClass("bg-primary");
-	$("#nav1").addClass("edit-color");
-	
-	for ( var i = 0; i < editableText.length; i++ ) {
-		editableText[i].contentEditable = "true";
-		editableText[i].classList.add("focus-blue");
-	}
-	console.log(editableNum.length);
-	for ( var j = 0; j < editableNum.length; j++ ) {
-		editableNum[j].contentEditable = "true";
-		editableNum[j].classList.add("focus-blue");
-	}
-	// Prevents user from entering letters or pressing "enter" in hours input
-	$(".editable-num").keypress(function(e) {
-    	if (isNaN(String.fromCharCode(e.which)) || e.which === 13) e.preventDefault();
-	});
+	if(!editBtnDisabled) {
+		isEditState = true;
+		$("#nav1").removeClass("bg-primary");
+		$("#nav1").addClass("edit-color");
+		
+		for ( var i = 0; i < editableText.length; i++ ) {
+			editableText[i].contentEditable = "true";
+			editableText[i].classList.add("focus-blue");
+		}
+		console.log(editableNum.length);
+		for ( var j = 0; j < editableNum.length; j++ ) {
+			editableNum[j].contentEditable = "true";
+			editableNum[j].classList.add("focus-blue");
+		}
+		// Prevents user from entering letters or pressing "enter" in hours input
+		$(".editable-num").keypress(function(e) {
+			if (isNaN(String.fromCharCode(e.which)) || e.which === 13) e.preventDefault();
+		});
 
-	// Prevents user from pressing "enter" on text edits
-	$(".editable-text").keypress(function(e) {
-    	if (e.which === 13) e.preventDefault();
-	});
+		// Prevents user from pressing "enter" on text edits
+		$(".editable-text").keypress(function(e) {
+			if (e.which === 13) e.preventDefault();
+		});
 
-	$("#nav1").removeClass("bg-primary");
-	$("#nav1").addClass("edit-color");
+		$("#nav1").removeClass("bg-primary");
+		$("#nav1").addClass("edit-color");
+	} else 
+		alert('disabled');
 }
 
 // Loads the settings from the variables declared above
@@ -406,6 +411,7 @@ function printPage() {
 
 // Function to set the page state to "Print view"
 function togglePrintView() {
+	toggleDisabled(editBtnDisabled);
 	var elementsToRemove = document.getElementsByClassName("remove-on-print-view");
 	if (!printViewState) {
 		document.getElementById("print-container").style.display = "block";
@@ -451,8 +457,9 @@ function alertFunc(text, d) {
 	}
 }
 
+// Specifically used for the blue sub-nav icons
 function toggleDisabled(toToggle) {
-	$("#menuContinenti").prop('disabled', function (_, val) { return ! val; });
+	toToggle = !toToggle;
 }
 
 /* FUNCTIONS TO ADD CARDS */
@@ -490,7 +497,7 @@ function addBox1(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"></div>'+
+			'<div class="card-footer"><button>Edit</button</div>'+
 		'</div>';
 	$(".box-container").append(obj);
 	boxCalculations1();
@@ -533,8 +540,7 @@ function addBox2(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"></div>'+
-			//'<div class="card-body">Id: ' + id + '</div>'+
+			'<div class="card-footer"><button>Edit</button</div>'+
 		'</div>';
 	$(".box-container").append(obj);
 	boxCalculations2();
@@ -577,7 +583,7 @@ function addBox3(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"></div>'+
+			'<div class="card-footer"><button>Edit</button</div>'+
 		'</div>';
 	$(".box-container").append(obj);
 	boxCalculations3();
@@ -620,7 +626,7 @@ function addBox4(id) {
 							'</span>'+
 						'</li>'+
 					'</ul>'+
-				'<div class="card-footer"></div>'+
+				'<div class="card-footer"><button>Edit</button</div>'+
 			'</div>';
 	$(".box-container").append(obj);
 	boxCalculations4();
@@ -663,7 +669,7 @@ function addBox5(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"></div>'+
+			'<div class="card-footer"><button>Edit</button</div>'+
 		'</div>';
 	$(".box-container").append(obj);
 	boxCalculations5();
@@ -706,7 +712,7 @@ function addBox6(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"></div>'+
+			'<div class="card-footer"><button>Edit</button</div>'+
 		'</div>';	
 	$(".box-container").append(obj);
 	boxCalculations6();
