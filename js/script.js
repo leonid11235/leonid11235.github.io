@@ -417,6 +417,7 @@ function togglePrintView() {
 		document.getElementById("print-container").style.display = "block";
 		elementsToRemove[0].style.display = "none";
 		elementsToRemove[1].style.display = "none";
+		// $('.box').toggleClass('col-sm-6');
 		printViewState = 1;
 	} else {
 		// Maybe load both at the same time??
@@ -424,6 +425,7 @@ function togglePrintView() {
 		elementsToRemove[1].style.display = "block";
 		document.getElementById("print-container").style.display = "none";
 		printViewState = 0;
+		// $('.box').toggleClass('col-sm-6');
 	}
 	// When hidden content appears, insert BLName into HTML spans
 	displayBLName();
@@ -497,8 +499,7 @@ function addBox1(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"><button>Edit</button</div>'+
-		'</div>';
+			'</div>';
 	$(".box-container").append(obj);
 	boxCalculations1();
 	fillValues1();
@@ -540,8 +541,7 @@ function addBox2(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"><button>Edit</button</div>'+
-		'</div>';
+			'</div>';
 	$(".box-container").append(obj);
 	boxCalculations2();
 	fillValues2();
@@ -583,8 +583,7 @@ function addBox3(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"><button>Edit</button</div>'+
-		'</div>';
+			'</div>';
 	$(".box-container").append(obj);
 	boxCalculations3();
 	fillValues3();
@@ -626,8 +625,7 @@ function addBox4(id) {
 							'</span>'+
 						'</li>'+
 					'</ul>'+
-				'<div class="card-footer"><button>Edit</button</div>'+
-			'</div>';
+				'</div>';
 	$(".box-container").append(obj);
 	boxCalculations4();
 	fillValues4();
@@ -669,8 +667,7 @@ function addBox5(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"><button>Edit</button</div>'+
-		'</div>';
+			'</div>';
 	$(".box-container").append(obj);
 	boxCalculations5();
 	fillValues5();
@@ -712,8 +709,7 @@ function addBox6(id) {
 						'</span>'+
 					'</li>'+
 				'</ul>'+
-			'<div class="card-footer"><button>Edit</button</div>'+
-		'</div>';	
+			'</div>';	
 	$(".box-container").append(obj);
 	boxCalculations6();
 	fillValues6();
