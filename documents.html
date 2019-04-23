@@ -82,7 +82,7 @@
         </div>
         <div class="modal-body">
           	<form>
-				<input class="form-control mr-sm-2" placeholder="Building Name"><br>
+				<input class="form-control mr-sm-2" id="create-input" placeholder="Building Name"><br>
 				<button class="btn btn-outline-success my-2 my-sm-0" id="createBtn">Create</button>
 		  	</form>
         </div>
@@ -101,9 +101,12 @@
 	  $('[data-toggle="tooltip"]').tooltip()
 	})
 	
-	$("#createBtn").addEventListener(function(e) {
+	$("#createBtn").click(function(e) {
 		e.preventDefault();
-		$(".document-container").append('<li class="document text bold">Greenbiar Condominium</li>');
+		console.log($('#create-input').val());
+		var createInput = $('#create-input').val();
+		$(".document-container").prepend('<li class="document text bold"><a href="cba.html">' + createInput + '<div class="buttons-container"><button data-toggle="tooltip" data-placement="top" title="Edit"><i class="far fa-edit"></i></button><button data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></button><button data-toggle="tooltip" data-placement="top" title="View"><i class="far fa-eye"></i></button></div></li>');
+		$('#addDocModal').modal('hide');
 	});
 </script>
 </body>
