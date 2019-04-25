@@ -242,12 +242,12 @@ function editState() {
 		
 		for ( var i = 0; i < editableText.length; i++ ) {
 			editableText[i].contentEditable = "true";
-			editableText[i].classList.add("focus-blue");
+			editableText[i].classList.add("outline-orange");
 		}
 		console.log(editableNum.length);
 		for ( var j = 0; j < editableNum.length; j++ ) {
 			editableNum[j].contentEditable = "true";
-			editableNum[j].classList.add("focus-blue");
+			editableNum[j].classList.add("outline-orange");
 		}
 		// Prevents user from entering letters or pressing "enter" in hours input
 		$(".editable-num").keypress(function(e) {
@@ -312,11 +312,11 @@ function saveState() {
 	
 	for ( var i = 0; i < editableText.length; i++ ) {
 		editableText[i].contentEditable = "false";
-		editableText[i].classList.remove("focus-blue");
+		editableText[i].classList.remove("outline-orange");
 	}
 	for ( var j = 0; j < editableNum.length; j++ ) {
 		editableNum[j].contentEditable = "false";
-		editableNum[j].classList.remove("focus-blue");
+		editableNum[j].classList.remove("outline-orange");
 	}
 	
 	var d = new Date();

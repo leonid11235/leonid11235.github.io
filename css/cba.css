@@ -54,6 +54,11 @@ hr{margin-top: 40px; margin-bottom: 30px;}
     color: #fff !important;
 }
 
+/* Editable sections */
+.myDiv > *[contenteditable="true"] {
+
+}
+
 /* FUNCTION CARDS */
 .box-container {min-height: 350px; padding: 0; width: 100%; list-style: none; margin-top: 40px;}
 .box-container-first {min-height: 350px; padding: 0; width: 100%; list-style: none; margin-top: 40px;}
@@ -74,7 +79,7 @@ hr{margin-top: 40px; margin-bottom: 30px;}
 .bg-green {background-color: #28a745;}
 .yellow {background-color: yellow;}
 .blue {background-color: #64C0F4;}
-.focus-blue {outline: -webkit-focus-ring-color auto 5px; width: fit-content;}
+.outline-orange {outline: solid 1px #ff9707;}
 .edit-color {background-color: #ff9707}
 .view-color {background-color: #5cb85c;}
 
@@ -189,10 +194,6 @@ html body .sticky-note div.close { color: #3d3402; opacity: 1; text-shadow: 1px 
     content: "";
     clear: both;
     display: table;
-}
-
-/* Add a background color on hover */
-.btn-group button:hover {
 }
 
 .cba-btn {
