@@ -30,6 +30,8 @@ const editableText = document.getElementsByClassName("editable-text");	// Doesnt
 const editableNum = document.getElementsByClassName("editable-num");
 const editBtn = document.getElementById("edit-btn");
 const saveBtn = document.getElementById("save-btn");
+const editBtnFooter = document.getElementById("edit-btn-footer");
+const saveBtnFooter = document.getElementById("save-btn-footer");
 const printViewBtn = document.getElementById("print-view-btn");
 const totalBoxArray = document.getElementsByClassName("totalBoxes");
 const totalSummary = document.getElementById("total-summary");
@@ -212,6 +214,8 @@ saveBtn.addEventListener('click', saveState);
 settingsBtn.addEventListener('click', loadSettings);
 settingsSaveBtn.addEventListener('click', saveSettings);
 printViewBtn.addEventListener('click', togglePrintView);
+editBtnFooter.addEventListener('click', editState);
+saveBtnFooter.addEventListener('click', saveState);
 
 // Run this before any work is done
 init();

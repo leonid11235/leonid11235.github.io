@@ -34,10 +34,16 @@ hr{margin-top: 40px; margin-bottom: 30px;}
 /* HEADER/FOOTER */
 
 .footer {
-   margin-top: 30px;
-   bottom:0;
-   width:100%;
-   height:60px;   /* Height of the footer */
+    display: none;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 .navbar-brand img {
 	width: 190px;
@@ -82,6 +88,7 @@ hr{margin-top: 40px; margin-bottom: 30px;}
 .outline-orange {outline: solid 1px #ff9707;}
 .edit-color {background-color: #ff9707}
 .view-color {background-color: #5cb85c;}
+.text-white {color: white;}
 
 /*
 ################################
