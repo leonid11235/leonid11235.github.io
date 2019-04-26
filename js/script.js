@@ -232,7 +232,7 @@ function init() {
 	$("#name-id").html("User: " + user);
 	$("#blg-name").html(BLSelected);
 	$("#blg-name2").html(BLSelected);
-	showOnScroll("checkbox-card" , "footer");
+	showOnScroll("nav2" , "footer");
 }
 
 /*************************
