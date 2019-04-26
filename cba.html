@@ -12,6 +12,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<style>
+	@media only screen and (max-width: 991px) {
+			.navbar-collapse {
+				margin-left: 20px;
+		}
+	}
+</style>
 </head>
 
 <body class="med-gray">
@@ -54,9 +61,9 @@
 	</div>
 	
 <section class="container-fluid">
-	<div class="">	
+	<div id="">	
 	<div class="card-group">
-	  <div class="card remove-on-print-view">
+	  <div class="card remove-on-print-view" id="checkbox-card">
 		<div class="card-header"><h2 class="card-title">Cost Benefit Analysis for <span id="blg-name"></span></h2></div>
 		<div class="card-body">
 		  <div class="form-check">
@@ -107,7 +114,7 @@
 		</div>
 	  </div>
 
-	  <div class="card" style="margin-right: 0px;">
+	  <div class="card" id="summary-card" style="margin-right: 0px;">
 		<div class="card-header"><h2 class="card-title">Summary</h2></div>
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item"><div class="row"><div class="col-sm-6 bold">Total Annual Savings: </div><div class="col-sm-6" id="total-summary">$100</div></div></li>
@@ -199,7 +206,7 @@
 <br><br><br>
 <div class="footer">
 	<div class="btn-group">
-			<span>Total savings:</span>
+		<div class="footer-savings">Total savings:<span id="total-summary-footer"></span></div>
 		<button title="Edit"><span id="edit-btn-footer" class=""><i class="icon-btn far fa-edit icon-med text-white icon-med"></i></span></button>
 		<button title="Save"><span id="save-btn-footer"><i class="icon-btn far fa-save icon-med text-white"></i></span></button>
 	</div>

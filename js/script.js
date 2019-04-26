@@ -232,6 +232,7 @@ function init() {
 	$("#name-id").html("User: " + user);
 	$("#blg-name").html(BLSelected);
 	$("#blg-name2").html(BLSelected);
+	showOnScroll("checkbox-card" , "footer");
 }
 
 /*************************
@@ -468,7 +469,27 @@ function toggleDisabled(toToggle) {
 	toToggle = !toToggle;
 }
 
+// Function to perform action on scroll
+function showOnScroll(selectorScrollPast, selectorToShow) {
+
+	var topofDiv = $("#" + selectorScrollPast).offset().top; //gets offset of header
+	var height = $("#" + selectorScrollPast).outerHeight(); //gets height of header
+
+	$(window).scroll(function(){
+		if($(window).scrollTop() > (topofDiv + height)){
+			// Incase id or class
+			$("#" + selectorToShow).show();
+			$("." + selectorToShow).show();
+		} else{
+			$("#" + selectorToShow).hide();
+			$("." + selectorToShow).hide();
+		}
+	});
+}
+
+/**************************************/
 /* FUNCTIONS TO ADD CARDS */
+/**************************************/
 
 function addBox1(id) {
 	console.log("Box 1 added");
@@ -782,6 +803,7 @@ function calcSummary() {
 		console.log(summaryTotal);
 	}
 	totalSummary.innerHTML = "$" + addCommas(summaryTotal);
+	$('#total-summary-footer').html(" $" + addCommas(summaryTotal));
 	var netAnnual = summaryTotal - subFeeTotal;
 	netSumID.innerHTML = "$" + addCommas(netAnnual);
 	

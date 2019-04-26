@@ -28,10 +28,13 @@ hr{margin-top: 40px; margin-bottom: 30px;}
 	border-radius: 2px;
 }
 .alert {position: absolute; top: 10px; left: 10px;}
+.show {display: block;}
 
 #print-container {display: none;}
 
+/******************************/
 /* HEADER/FOOTER */
+/******************************/
 
 .footer {
     display: none;
@@ -44,7 +47,14 @@ hr{margin-top: 40px; margin-bottom: 30px;}
     text-align: center;
     padding-left: 20px;
     padding-right: 20px;
+    z-index: 1000;
 }
+
+.footer-savings {
+    float: left;
+    margin-top: 10px;
+}
+
 .navbar-brand img {
 	width: 190px;
 	margin-top: 10px;
@@ -61,8 +71,8 @@ hr{margin-top: 40px; margin-bottom: 30px;}
 }
 
 /* Editable sections */
-.myDiv > *[contenteditable="true"] {
-
+html > *[contenteditable="true"] {
+    background-color: red;
 }
 
 /* FUNCTION CARDS */
@@ -206,6 +216,16 @@ html body .sticky-note div.close { color: #3d3402; opacity: 1; text-shadow: 1px 
 .cba-btn {
 	width: 100px;
 	margin-bottom: 5px;
+}
+
+/*
+################################
+               MODALS
+################################
+*/
+
+body.modal-open {
+    overflow: hidden;
 }
 
 /*
