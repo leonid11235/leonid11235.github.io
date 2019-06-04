@@ -24,7 +24,7 @@ var boxArray = document.getElementsByClassName("box");
 var checkArrayLength = checkArray.length;
 const clearBtn = document.getElementById("clear-btn");
 const openBtn = document.getElementById("open-all-btn");
-const notesBtn = document.getElementById("notes-btn");
+// const notesBtn = document.getElementById("notes-btn");
 const printBtn = document.getElementById("print-btn");
 const editableText = document.getElementsByClassName("editable-text");	// Doesnt exist yet
 const editableNum = document.getElementsByClassName("editable-num");
@@ -905,69 +905,69 @@ function displayBLName() {
 /*************************
 /* STICKY NOTES
 /*************************/
-var maxNotes = 1;
+// var maxNotes = 1;
 
-var zIndex = 10;
-$(notesBtn).click(function(){
-    $('#notes')
-        .append('\
-            <div class="sticky-note-pre ui-widget-content" style="position: absolute; min-height: 300px; min-width:300px; top: 100px; left: 100px; z-index: 18;">\
-                <div class="handle">&nbsp;<div class="close">&times;</div></div>\
-                <div contenteditable class="contents">awesome</div>\
-            </div>\
-         ')
-        .find('.sticky-note-pre')
-            //.position where we want it
-        .end()
-        //.do something else to $('#notes')
-    ;
-    $('.sticky-note-pre').draggable({
-            handle: '.handle'    
-        })
-        .resizable({
-            resize: function(){
-                var n = $(this);
-                n.find('.contents').css({
-                    width: n.width() - 40,
-                    height: n.height() - 60
-                });
-            }
-        })
-        .bind('click hover focus mousedown', function(){
-            $(this)
-                .css('zIndex', zIndex++)
-                .find('.ui-icon')
-                    .css('zIndex', zIndex++)
-                .end()
-            ;
-        })
-        .find('.close')
-            .click(function(){
-                $(this).parents('.sticky-note').remove();
-            })
-        .end()
-        .dblclick(function(){
-            $(this).remove();
-        })
-        .addClass('sticky-note')
-        .removeClass('sticky-note-pre')
-    ;
-});
+// var zIndex = 10;
+// $(notesBtn).click(function(){
+//     $('#notes')
+//         .append('\
+//             <div class="sticky-note-pre ui-widget-content" style="position: absolute; min-height: 300px; min-width:300px; top: 100px; left: 100px; z-index: 18;">\
+//                 <div class="handle">&nbsp;<div class="close">&times;</div></div>\
+//                 <div contenteditable class="contents">awesome</div>\
+//             </div>\
+//          ')
+//         .find('.sticky-note-pre')
+//             //.position where we want it
+//         .end()
+//         //.do something else to $('#notes')
+//     ;
+//     $('.sticky-note-pre').draggable({
+//             handle: '.handle'    
+//         })
+//         .resizable({
+//             resize: function(){
+//                 var n = $(this);
+//                 n.find('.contents').css({
+//                     width: n.width() - 40,
+//                     height: n.height() - 60
+//                 });
+//             }
+//         })
+//         .bind('click hover focus mousedown', function(){
+//             $(this)
+//                 .css('zIndex', zIndex++)
+//                 .find('.ui-icon')
+//                     .css('zIndex', zIndex++)
+//                 .end()
+//             ;
+//         })
+//         .find('.close')
+//             .click(function(){
+//                 $(this).parents('.sticky-note').remove();
+//             })
+//         .end()
+//         .dblclick(function(){
+//             $(this).remove();
+//         })
+//         .addClass('sticky-note')
+//         .removeClass('sticky-note-pre')
+//     ;
+// });
 
-// What to do when we save the note
-$('#save').click(function(){
-    var notes = [], i, note;
-    $('.sticky-note').each(function(){
-        notes.push($(this).find('.contents').html());
-    });
-    //do something with notes
-    console.log("Notes: " + notes);
-});
+// // What to do when we save the note
+// $('#save').click(function(){
+//     var notes = [], i, note;
+//     $('.sticky-note').each(function(){
+//         notes.push($(this).find('.contents').html());
+//     });
+//     //do something with notes
+//     console.log("Notes: " + notes);
+// });
 
-// Tooltips
-$(function () {
-	$('[data-toggle="tooltip"]').tooltip()
-})
+// // Tooltips
+// $(function () {
+// 	$('[data-toggle="tooltip"]').tooltip()
+// })
 
 /*************************
 /* Tutorial 

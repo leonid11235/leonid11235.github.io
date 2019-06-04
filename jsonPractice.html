@@ -1,0 +1,89 @@
+<!doctype html>
+<html class="med-gray">
+<head>
+<meta charset="utf-8">
+<title>JSON with local storage practice</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<!-- <link href="jquery-ui.min.css" rel="stylesheet" type="text/css"> -->
+<link href="css/cba.css" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<style>
+</style>
+</head>
+<body>
+    <h1>JSON with local storage practice</h1>
+    <button>Button</button>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-firestore.js"></script>
+    <script>
+
+    //import * as firebase from 'firebase';
+    import 'firebase/firestore';
+
+    // TODO: Replace the following with your app's Firebase project configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCJoRgPIohWegEmKF0AzzBayzZTgnWEPjE",
+        authDomain: "test-project-185800.firebaseapp.com",
+        databaseURL: "https://project-id.firebaseio.com",
+        projectId: "test-project-185800",
+        storageBucket: "test-project-185800.appspot.com",
+        //messagingSenderId: "sender-id",
+        //appID: "app-id",
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    var db = firebase.firestore();
+
+    db.collection("users").add({
+        first: "Ada",
+        last: "Lovelace",
+        born: 1815
+    })
+    .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+
+
+        // Data
+        var myObj = {
+            one: {
+                title: 'first',
+                id: 1,
+                customKey : {
+                    first: "first",
+                    second: "second"
+                }
+            },
+            two: {
+                title: 'second',
+                id: 2
+            },
+            three: {
+                title: 'this is the third',
+                id: 3
+            }
+        };
+
+        // Functions
+        console.log(myObj);
+        // Store obj in local storage with key of 'storeObj'
+        localStorage.setItem('storeObj', JSON.stringify(myObj));
+        // If you go on another page you can retrieve that object
+        var getObject = JSON.parse(localStorage.getItem('storeObj'));
+        getObject.one.title = "first updated";
+        console.log(getObject);
+    </script>
+</body>
+</html>
