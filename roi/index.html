@@ -1,0 +1,314 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Documents Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<style>
+	.dashboard-form button {
+		margin-right: 5px;
+	}	
+</style>
+</head>
+<body class="med-gray">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary no-print" id="nav1">
+            <a class="navbar-brand" href="index.html"><img src="images/logo-BuildingLink-RGB-White.png" alt="BuildingLink logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="edit.html">Editor <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+	</nav>
+		
+	<section class="container-fluid">
+		<div class="">
+			<h1>Documents Dashboard</h1>
+		</div>
+		<!-- Search form -->
+		<form class="form-inline my-2 my-lg-0 dashboard-form">
+			<input class="form-control mr-sm-2" type="search" placeholder="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" id="btn-clear-ls">Clear localStorage</button>
+		</form>
+	</section>
+	<ul class="document-container">
+		<!-- Dynamic content inserted here -->
+		<li><i class="fas fa-plus icon-med green" id="addBtn" data-toggle="modal" data-target="#addDocModal"></i></li>
+	</ul>
+	
+	<!-- ADD DOC MODAL -->
+  <div class="modal fade" id="addDocModal" role="dialog">
+    <div class="modal-dialog">
+    
+	  <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+		  		<h4 class="modal-title">Add New Document</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						Document Name
+						<input class="form-control mr-sm-2" id="input-doc-name" placeholder="Document Name">
+						<br>Units
+						<input type="text" class="form-control" id="setting-units" placeholder="300">
+						<br>Hourly rate
+						<input type="text" class="form-control" id="settings-hourly" placeholder="20">
+						<br>
+						<label for="logoSelect">Select Building</label>
+						<!-- Dynamically create select list of buildings -->
+						<div id="select-list-blg">
+
+						</div>
+						<br>
+						<button class="btn btn-outline-success my-2 my-sm-0" id="createBtn">Create</button>
+					</form>
+				</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+	
+<footer class="footer" id="footer"></footer>
+
+<!-- Get Data -->
+<script src="scripts/data.js"></script>
+<!-- File needs to be created -->
+<script src="scripts/main.js"></script>
+<script>
+
+	// Tooltip
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
+
+	// Document Functionality
+	var Docs = {
+		sessionDocuments: null,
+		sessionDocumentsInfo: null,
+
+		init: function() {
+			var domDocumentID = "";
+			
+			// If not stored, store in localstorage
+			if(localStorage.getItem("data") === null)
+				localStorage.setItem("data", JSON.stringify(Documents));
+			this.sessionDocuments = JSON.parse(localStorage.getItem("data"));
+			// Render existing Documents into the UI from the LocalStorage
+
+			// If not stored, store the documentsData in localStorage
+			if(localStorage.getItem("docInfoData") === null)
+				localStorage.setItem("docInfoData", JSON.stringify(documentsData));
+			this.sessionDocumentsInfo = JSON.parse(localStorage.getItem("docInfoData"));
+			
+			for (var i = 0; i < this.sessionDocuments.length; i++) {
+				domDocumentID = "domDocumentID_" + this.sessionDocuments[i].id.toString();
+				$(".document-container").prepend('<li class="document text bold" id="'+ domDocumentID + '">' + this.sessionDocuments[i].DocSettings.docName + ": " + this.sessionDocuments[i].DocSettings.buildingName + '<div class="buttons-container"><button class="btn-edit-document" title="Edit"><i class="far fa-edit"></i></button><button class="btn-delete-document"  title="Delete"><i class="fas fa-trash-alt"></i></button><button title="View"><i class="far fa-eye"></i></button></div></li>');
+			}
+			console.log(this.sessionDocuments);
+
+			this.createBlgSelectList();
+		},
+		createDoc: function() {
+			// Get the settings entered from the UI and insert into Settings obj
+			var createdDocName = $('#input-doc-name').val();
+			var createdUnits = $('#setting-units').val();
+			var createdHourly = $('#settings-hourly').val();
+			var createdBlgSct = $('#dynamic-select option:selected').text();
+			var createdBlgId = $('#dynamic-select').val();
+			var createdDocId = this.sessionDocumentsInfo.runningID + 1;
+			this.sessionDocumentsInfo.runningID = createdDocId;
+			
+			// Update info in localStorage
+			localStorage.setItem("docInfoData", JSON.stringify(this.sessionDocumentsInfo));
+			var domDocumentID = "domDocumentID_" + createdDocId.toString();
+
+			// Insert a new object with created data inserted
+			this.sessionDocuments.push(
+				{
+					id: createdDocId,
+					created: 0,
+					lastUpdate: 0,
+
+					DocSettings: {
+						docName: createdDocName,
+						units: createdUnits,
+						hourly: createdHourly,
+						buildingID: createdBlgId,
+						buildingName: createdBlgSct
+					},
+
+					// Array of card objects 
+					CategoryData: [
+						{
+							id: 1,
+							cardActive: true,
+							title: "Title1",
+							timeSaving: 10,
+							valueTimeSaved: 10,
+							directCost: 10,
+							totalSave: 10
+						},
+						{
+							id: 2,
+							cardActive: false,
+							title: "Title2",
+							timeSaving: 10,
+							valueTimeSaved: 10,
+							directCost: 10,
+							totalSave: 10
+						},
+						{
+							id: 3,
+							cardActive: false,
+							title: "Title3",
+							timeSaving: 10,
+							valueTimeSaved: 10,
+							directCost: 10,
+							totalSave: 10
+						},
+						{
+							id: 4,
+							cardActive: false,
+							title: "Title4",
+							timeSaving: 10,
+							valueTimeSaved: 10,
+							directCost: 10,
+							totalSave: 10
+						},
+						{
+							id: 5,
+							cardActive: false,
+							title: "Title5",
+							timeSaving: 10,
+							valueTimeSaved: 10,
+							directCost: 10,
+							totalSave: 10
+						},
+						{
+							id: 6,
+							cardActive: true,
+							title: "Title6",
+							timeSaving: 10,
+							valueTimeSaved: 10,
+							directCost: 10,
+							totalSave: 10
+						}
+					]
+				}
+			);
+			console.log(this.sessionDocuments);
+			// Store the updated object
+			localStorage.setItem("data", JSON.stringify(this.sessionDocuments));
+			localStorage.setItem('docInfoData', JSON.stringify(this.sessionDocumentsInfo));
+
+			$(".document-container").prepend('<li class="document text bold" id="'+ domDocumentID + '">' + createdDocName + ": " + createdBlgSct + '<div class="buttons-container"><button class="btn-edit-document" title="Edit"><i class="far fa-edit"></i></button><button class="btn-delete-document" title="Delete"><i class="fas fa-trash-alt"></i></button><button data-placement="top" title="View"><i class="far fa-eye"></i></button></div></li>');
+			$('#addDocModal').modal('hide');
+			// Add event listener to newly created element - NOTE: unecessary traversal
+			$('.btn-delete-document').first().click(deleteBtnListener);
+			$('.btn-edit-document').first().click(editBtnListener);
+		},
+		deleteDoc: function(toDeleteDOMID) {
+			$('#' + toDeleteDOMID).remove();
+			var toDeleteIDNum = returnNums(toDeleteDOMID);
+			// Update Local storage
+			for (var i = 0; i < this.sessionDocuments.length; i++) {
+				if (this.sessionDocuments[i].id === toDeleteIDNum)
+					this.sessionDocuments.splice(findWithAttr(this.sessionDocuments, "id", toDeleteIDNum), 1);
+			}
+			localStorage.setItem("data", JSON.stringify(this.sessionDocuments));
+		},
+		// This updates the last visited document's edit page
+		toRoute: function(toRouteDOMId) {
+			var toRouteIDNum = returnNums(toRouteDOMId);
+			this.sessionDocumentsInfo.lastEdited = toRouteIDNum;
+			localStorage.setItem("docInfoData", JSON.stringify(this.sessionDocumentsInfo));
+			window.location.href = 'edit.html';
+		},
+		createBlgSelectList: function() {
+			var selectDiv = document.getElementById("select-list-blg");
+
+			//Create and append select list
+			var selectList = document.createElement("select");
+			selectList.id = "dynamic-select";
+			selectList.className = "form-control";
+			selectDiv.appendChild(selectList);
+
+			//Create and append the options
+			for (var i = 0; i < buildings.length; i++) {
+				var option = document.createElement("option");
+				option.value = buildings[i].id;
+				option.text = buildings[i].name;
+				selectList.appendChild(option);
+			}
+		}
+	};
+
+	// Find the index given a JS object attribute and value
+	function findWithAttr(array, attr, value) {
+		for(var i = 0; i < array.length; i += 1) {
+			if(array[i][attr] === value) {
+				return i;
+			}
+		}
+		return - 1;
+	}
+
+	// Initialize the documents page
+	Docs.init();
+
+	/* LISTENERS */
+	$("#createBtn").click(function(e) {
+		e.preventDefault();
+		// settings.setSettings();
+		Docs.createDoc();
+	});
+
+	$('#btn-clear-ls').click(function(e) {
+		localStorage.clear();
+		alert("Local Storage Cleared");
+	});
+
+	$('.btn-delete-document').click(deleteBtnListener);
+
+	function returnNums(stringToClean) {
+		return Number((stringToClean).match(/\d+$/));
+	}
+
+	$('.btn-edit-document').click(editBtnListener);
+
+	function deleteBtnListener() {
+		var $firstParent = $(this).parent();
+		var $secondParent = $firstParent.parent();
+		var toDeleteID = $secondParent.attr('id');
+		Docs.deleteDoc(toDeleteID);
+	}
+
+	function editBtnListener() {
+		var $firstParent = $(this).parent();
+		var $secondParent = $firstParent.parent();
+		Docs.toRoute($secondParent.attr('id'));
+	}
+
+</script>
+</body>
+</html>

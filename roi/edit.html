@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Documents Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body class="med-gray">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary no-print" id="nav1">
+            <a class="navbar-brand" href="index.html"><img src="images/logo-BuildingLink-RGB-White.png" alt="BuildingLink logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="edit.html">Editor <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+    </nav>
+        
+    <!-- Sub Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light no-print" id="nav2">
+        <div class="btn-group">
+            <button title="Print"><span id="print-btn"><i class="icon-btn fas fa-print icon-med text-primary"></i></span></button>
+            <button title="Toggle Print View"><span id="print-view-btn"><i class="icon-btn far fa-eye icon-med text-primary"></i></span></button>
+            <button title="Settings"><span id="settings-btn" data-toggle="modal" data-target="#settings-modal"><i class="icon-btn fas fa-cog icon-med text-primary"></i></span></button>
+        </div>
+    </nav>
+
+    <section class="container-fluid">
+            <div id="">	
+            <div class="card-group">
+                <div class="card remove-on-print-view" id="checkbox-card">
+                <div class="card-header">
+                    <h2 class="card-title">ROI for <span id="blg-name"></span></h2>
+                    <h5 class="card-title">Document: <span id="doc-name"></span></h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                        Package Tracking
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+                        <label class="form-check-label" for="defaultCheck2">
+                        Maintanance & Repair
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+                        <label class="form-check-label" for="defaultCheck3">
+                        Employee Time Clock
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+                        <label class="form-check-label" for="defaultCheck4">
+                        Resident Communication
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
+                        <label class="form-check-label" for="defaultCheck5">
+                        Time Clock Reporting & Data
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
+                        <label class="form-check-label" for="defaultCheck6">
+                        Security
+                        </label>
+                    </div>
+                    <br>
+                    <button id="clear-btn" class="btn cba-btn btn-outline-primary btn-sm">Clear list<i class="icon fas fa-trash-alt"></i></button>
+                    <button id="open-all-btn" class="btn cba-btn btn-outline-primary btn-sm">Check All<i class="icon fas fa-check-double"></i></button>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted" id="name-id">User: user1</small>
+                </div>
+                </div>
+
+                <div class="card" id="summary-card" style="margin-right: 0px;">
+                    <div class="card-header"><h2 class="card-title">Summary</h2></div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><div class="row"><div class="col-sm-6 bold">Total Annual Savings: </div><div class="col-sm-6">$<span id="total-summary"></span></div></div></li>
+                        <li class="list-group-item"><div class="row"><div class="col-sm-6 bold">Yearly Subscription Fee based on $2/unit/month: </div><div class="col-sm-6">$<span id="sub-fee"></span></div></div></li>
+                        <li class="list-group-item"><div class="row"><div class="col-sm-6 bold">Net Annual Savings: </div><div class="col-sm-6">$<span id="net-sum"></span></div></div> </li>
+                        <li class="list-group-item"><div class="row"><div class="col-sm-6 bold">Last updated: </div><div class="col-sm-6" id="date-update"></div></div></li>
+                    </ul>
+                    <div class="card-body">
+        
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container-fluid">
+        <!-- Dynamic content -->
+        <hr>
+        <p class="emptyInd">Check a box to begin</p>
+        <div class="med-gray">
+            <ul class="box-container">
+
+            </ul>
+	    </div>
+    </section>
+
+
+<!-- Get Data -->    
+<script src="scripts/data.js"></script>
+<!-- File needs to be created -->
+<script src="scripts/main.js"></script>
+<!-- Handlebars for mustache notation -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.amd.min.js"></script> -->
+<script>
+    var sessionDocuments = null;
+    var sessionDocumentsInfo = null;
+    var curDocId = null;
+    var curDocIndex = null;
+
+    var editPage = {
+        sessionDocuments: "",
+        sessionDocumentsInfo: "",
+        
+        init: function() {
+
+            // If not stored, store in localstorage
+			if(localStorage.getItem("data") === null)
+				localStorage.setItem("data", JSON.stringify(Documents));
+			sessionDocuments = JSON.parse(localStorage.getItem("data"));
+
+			// If not stored, store the documentsData in localStorage
+			if(localStorage.getItem("docInfoData") === null)
+				localStorage.setItem("docInfoData", JSON.stringify(documentsData));
+            sessionDocumentsInfo = JSON.parse(localStorage.getItem("docInfoData"));
+            
+            // Initalize the doc id we are working with
+            curDocId = sessionDocumentsInfo.lastEdited;
+
+            // Render data in the HTML
+            $('#blg-name').html(sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].DocSettings.buildingName);
+            $('#doc-name').html(sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].DocSettings.docName);
+            // These values should be in data.js to reduce calculations
+            $('#total-summary').html(summary.getAnnualSavings());
+            $('#sub-fee').html(summary.getYearlySubFee());
+            $('#net-sum').html(summary.getNetAnnualSavings());
+
+            // Card functions
+            cardFunctions.checkboxPrompt();
+        },
+
+        getCurDocIndex: function() {
+            curDocIndex = findWithAttr(sessionDocuments, "id", curDocId);
+        }
+    };
+
+    var cardFunctions = {
+        addCard: function() {
+
+        },
+        removeCard: function() {
+
+        },
+        removeAllCards: function() {
+
+        },
+        addAllCards: function() {
+
+        },
+        checkboxPrompt: function() {
+            if($('.form-check-input:checked').length === 0) {
+		        $(".emptyInd").show();
+            } else{
+                $(".emptyInd").hide();
+            }	
+        }
+    };
+
+    var summary = {
+        getAnnualSavings: function() {
+            var annualSavings = 0;
+
+            // alert(findWithAttr(sessionDocuments, "id", curDocId));
+
+            for (var i = 0; i < sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].CategoryData.length; i++) {
+                if (sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].CategoryData[i].cardActive) {
+                    annualSavings += sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].CategoryData[i].totalSave;
+                }
+            }
+
+            return annualSavings;
+        },
+        getYearlySubFee: function() {
+            return 2 * sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].DocSettings.hourly * 12;
+        },
+
+        getNetAnnualSavings: function() {
+            return this.getAnnualSavings() - this.getYearlySubFee();
+        }
+    };
+
+    // Find the index given a JS object attribute and value
+	function findWithAttr(array, attr, value) {
+		for(var i = 0; i < array.length; i += 1) {
+			if(array[i][attr] === value) {
+				return i;
+			}
+		}
+		return - 1;
+    }
+
+    editPage.init();
+    
+</script>
+</body>
+</html>

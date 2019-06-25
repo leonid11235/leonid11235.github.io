@@ -17,43 +17,45 @@
 </head>
 <body>
     <h1>JSON with local storage practice</h1>
-    <button>Button</button>
+    <button id="btn-change-data">Change Data</button>
+    <button id="btn-to-default">Revert to default</button>
+    <div id="prompt-next"></div>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-firestore.js"></script>
     <script>
 
-    //import * as firebase from 'firebase';
-    import 'firebase/firestore';
+    // //import * as firebase from 'firebase';
+    // import 'firebase/firestore';
 
-    // TODO: Replace the following with your app's Firebase project configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyCJoRgPIohWegEmKF0AzzBayzZTgnWEPjE",
-        authDomain: "test-project-185800.firebaseapp.com",
-        databaseURL: "https://project-id.firebaseio.com",
-        projectId: "test-project-185800",
-        storageBucket: "test-project-185800.appspot.com",
-        //messagingSenderId: "sender-id",
-        //appID: "app-id",
-    };
+    // // TODO: Replace the following with your app's Firebase project configuration
+    // var firebaseConfig = {
+    //     apiKey: "AIzaSyCJoRgPIohWegEmKF0AzzBayzZTgnWEPjE",
+    //     authDomain: "test-project-185800.firebaseapp.com",
+    //     databaseURL: "https://project-id.firebaseio.com",
+    //     projectId: "test-project-185800",
+    //     storageBucket: "test-project-185800.appspot.com",
+    //     //messagingSenderId: "sender-id",
+    //     //appID: "app-id",
+    // };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    // firebase.initializeApp(firebaseConfig);
 
-    var db = firebase.firestore();
+    // var db = firebase.firestore();
 
-    db.collection("users").add({
-        first: "Ada",
-        last: "Lovelace",
-        born: 1815
-    })
-    .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-    });
+    // db.collection("users").add({
+    //     first: "Ada",
+    //     last: "Lovelace",
+    //     born: 1815
+    // })
+    // .then(function(docRef) {
+    //     console.log("Document written with ID: ", docRef.id);
+    // })
+    // .catch(function(error) {
+    //     console.error("Error adding document: ", error);
+    // });
 
 
         // Data
@@ -80,10 +82,21 @@
         console.log(myObj);
         // Store obj in local storage with key of 'storeObj'
         localStorage.setItem('storeObj', JSON.stringify(myObj));
-        // If you go on another page you can retrieve that object
-        var getObject = JSON.parse(localStorage.getItem('storeObj'));
-        getObject.one.title = "first updated";
-        console.log(getObject);
+
+        // Button click
+        document.getElementById("btn-change-data").addEventListener('click', function() {
+            // If you go on another page you can retrieve that object
+            myObj = JSON.parse(localStorage.getItem('storeObj'));
+            myObj.one.title = "first updated";
+            console.log(myObj);
+            localStorage.setItem('storeObj', JSON.stringify(myObj));
+            $('#prompt-next').append("<p>Click here to <a href='jsonPractice2.html'>next</a> page</p>");
+        });
+
+        document.getElementById("btn-to-default").addEventListener('click', function() {
+            myObj.one.title = "first";
+            localStorage.setItem('storeObj', JSON.stringify(myObj));
+        });
     </script>
 </body>
 </html>
