@@ -86,8 +86,8 @@
                         </label>
                     </div>
                     <br>
-                    <button id="clear-btn" class="btn cba-btn btn-outline-primary btn-sm">Clear list<i class="icon fas fa-trash-alt"></i></button>
-                    <button id="open-all-btn" class="btn cba-btn btn-outline-primary btn-sm">Check All<i class="icon fas fa-check-double"></i></button>
+                    <button id="clear-btn" class="btn cba-btn btn-outline-primary btn-sm" onclick="cardFunctions.removeAllCards()">Clear list<i class="icon fas fa-trash-alt"></i></button>
+                    <button id="open-all-btn" class="btn cba-btn btn-outline-primary btn-sm" onclick="cardFunctions.addAllCards()">Check All<i class="icon fas fa-check-double"></i></button>
                 </div>
                 <div class="card-footer">
                     <small class="text-muted" id="name-id">User: user1</small>
@@ -155,10 +155,12 @@
             
             // Initalize the doc id we are working with
             curDocId = sessionDocumentsInfo.lastEdited;
+            this.getCurDocIndex();
+            alert(curDocIndex);
 
             // Render data in the HTML
-            $('#blg-name').html(sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].DocSettings.buildingName);
-            $('#doc-name').html(sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].DocSettings.docName);
+            $('#blg-name').html(sessionDocuments[curDocIndex].DocSettings.buildingName);
+            $('#doc-name').html(sessionDocuments[curDocIndex].DocSettings.docName);
             // These values should be in data.js to reduce calculations
             $('#total-summary').html(summary.getAnnualSavings());
             $('#sub-fee').html(summary.getYearlySubFee());
@@ -167,31 +169,83 @@
             // Card functions
             cardFunctions.checkboxPrompt();
         },
-
         getCurDocIndex: function() {
             curDocIndex = findWithAttr(sessionDocuments, "id", curDocId);
         }
     };
 
     var cardFunctions = {
-        addCard: function() {
+        addCard: function(cardID) {
+            var cardDOMID = "card_" + cardID;
 
+            var cardIndex = this.getCardIndex(cardID);
+            alert("card index: " + cardIndex);
+            var obj = 
+                '<div class="card inline-block box" id="'+ sessionDocuments[curDocId].CategoryData[cardIndex].title +'">'+
+                    '<div class="card-header">' +
+                            '<h5 class="card-title editable-text">' + cardDOMID + '</h5>'+
+                        '</div>'+
+                        '<ul class="list-group list-group-flush">'+
+                            '<li class="list-group-item"><span class="editable-text">'+
+                                'Time saving'+
+                                '</span>: <span class="float-right">'+
+                                    '<span id="timeSave1" class="editable-num" >0</span><span> hours</span>'+
+                                '</span>'+
+                            '</li>'+
+                            '<li class="list-group-item">'+
+                                'Value of time saved: '+
+                                '<span class="float-right">'+
+                                    '$<span id="vs1" class="valueSaved">0</span>'+
+                                '</span>'+
+                            '</li>'+
+                            '<li class="list-group-item">'+
+                                'Direct cost savings: '+
+                                '<span class="float-right">'+
+                                    '$<span id="direct1" class="editable-num">0</span>'+
+                                '</span>'+
+                            '</li>'+
+                            '<li class="list-group-item">'+
+                                'Total monetary savings: '+
+                                '<span class="float-right">'+
+                                    '$<span id="packageSummary" class="totalBoxes">0</span>'+
+                                '</span>'+
+                            '</li>'+
+                        '</ul>'+
+                    '</div>';
+            $(".box-container").append(obj);
         },
         removeCard: function() {
 
         },
         removeAllCards: function() {
-
+            for (var i = 0; i < sessionDocuments[curDocIndex].CategoryData.length; i++) {
+                // Turn the state to not active
+                sessionDocuments[curDocIndex].CategoryData.cardActive = false;
+                $('.box').remove();
+            }
+            this.checkboxPrompt();
         },
         addAllCards: function() {
-
+            for (var i = 0; i < sessionDocuments[curDocIndex].CategoryData.length; i++) {
+                // Turn the state to active
+                sessionDocuments[curDocIndex].CategoryData.cardActive = true;
+                this.addCard(sessionDocuments[curDocIndex].CategoryData.cardID);
+                localStorage.setItem("data", JSON.stringify(sessionDocuments));
+            }
+            this.checkboxPrompt();
         },
         checkboxPrompt: function() {
-            if($('.form-check-input:checked').length === 0) {
-		        $(".emptyInd").show();
-            } else{
+            if ($('.box-container div').length === 0)
+                $(".emptyInd").show();
+            else
                 $(".emptyInd").hide();
-            }	
+        },
+        getCardIndex: function(cardID) {
+            alert("getCardIndex id: " + cardID);
+            var tempArray = sessionDocuments[curDocIndex].CategoryData; // Get array
+            console.log(tempArray);
+            alert("getCardIndex returned: " + findWithAttr(tempArray, "id", cardID));
+            return findWithAttr(tempArray, "id", cardID); // Get index
         }
     };
 
@@ -201,16 +255,16 @@
 
             // alert(findWithAttr(sessionDocuments, "id", curDocId));
 
-            for (var i = 0; i < sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].CategoryData.length; i++) {
-                if (sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].CategoryData[i].cardActive) {
-                    annualSavings += sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].CategoryData[i].totalSave;
+            for (var i = 0; i < sessionDocuments[curDocIndex].CategoryData.length; i++) {
+                if (sessionDocuments[curDocIndex].CategoryData[i].cardActive) {
+                    annualSavings += sessionDocuments[curDocIndex].CategoryData[i].totalSave;
                 }
             }
 
             return annualSavings;
         },
         getYearlySubFee: function() {
-            return 2 * sessionDocuments[findWithAttr(sessionDocuments, "id", curDocId)].DocSettings.hourly * 12;
+            return 2 * sessionDocuments[curDocIndex].DocSettings.hourly * 12;
         },
 
         getNetAnnualSavings: function() {
@@ -229,7 +283,11 @@
     }
 
     editPage.init();
-    
+
+    function btnListeners() {
+        
+    }
+
 </script>
 </body>
 </html>
