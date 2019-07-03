@@ -10,6 +10,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <link href="css/style.css" rel="stylesheet" type="text/css">
+
+<style>
+    .card-header {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px; 
+    }   
+</style>
+
 </head>
 <body class="med-gray">
     <!-- Navigation -->
@@ -44,54 +52,54 @@
             <div id="">	
             <div class="card-group">
                 <div class="card remove-on-print-view" id="checkbox-card">
-                <div class="card-header">
-                    <h2 class="card-title">ROI for <span id="blg-name"></span></h2>
-                    <h5 class="card-title">Document: <span id="doc-name"></span></h5>
-                </div>
-                <div class="card-body">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                        Package Tracking
-                        </label>
+                    <div class="card-header">
+                        <h2 class="card-title">ROI for <span id="blg-name"></span></h2>
+                        <h5 class="card-title">Document: <span id="doc-name"></span></h5>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                        <label class="form-check-label" for="defaultCheck2">
-                        Maintanance & Repair
-                        </label>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="boxCheck1">
+                            <label class="form-check-label" for="boxCheck1">
+                            Package Tracking
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="boxCheck2">
+                            <label class="form-check-label" for="boxCheck2">
+                            Maintanance & Repair
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="boxCheck3">
+                            <label class="form-check-label" for="boxCheck3">
+                            Employee Time Clock
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="boxCheck4">
+                            <label class="form-check-label" for="boxCheck4">
+                            Resident Communication
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="boxCheck5">
+                            <label class="form-check-label" for="boxCheck5">
+                            Time Clock Reporting & Data
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="boxCheck6" onClick="">
+                            <label class="form-check-label" for="boxCheck6">
+                            Security
+                            </label>
+                        </div>
+                        <br>
+                        <button id="clear-btn" class="btn cba-btn btn-outline-primary btn-sm" onclick="cardFunctions.removeAllCards()">Clear list<i class="icon fas fa-trash-alt"></i></button>
+                        <button id="open-all-btn" class="btn cba-btn btn-outline-primary btn-sm" onclick="cardFunctions.addAllCards()">Check All<i class="icon fas fa-check-double"></i></button>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                        <label class="form-check-label" for="defaultCheck3">
-                        Employee Time Clock
-                        </label>
+                    <div class="card-footer">
+                        <small class="text-muted" id="name-id">User: user1</small>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
-                        <label class="form-check-label" for="defaultCheck4">
-                        Resident Communication
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
-                        <label class="form-check-label" for="defaultCheck5">
-                        Time Clock Reporting & Data
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
-                        <label class="form-check-label" for="defaultCheck6">
-                        Security
-                        </label>
-                    </div>
-                    <br>
-                    <button id="clear-btn" class="btn cba-btn btn-outline-primary btn-sm" onclick="cardFunctions.removeAllCards()">Clear list<i class="icon fas fa-trash-alt"></i></button>
-                    <button id="open-all-btn" class="btn cba-btn btn-outline-primary btn-sm" onclick="cardFunctions.addAllCards()">Check All<i class="icon fas fa-check-double"></i></button>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted" id="name-id">User: user1</small>
-                </div>
                 </div>
 
                 <div class="card" id="summary-card" style="margin-right: 0px;">
@@ -122,6 +130,13 @@
 
             </ul>
 	    </div>
+    </section>
+
+    <!-- Contains how card calclations are made -->
+    <section>
+        <div class="calc-info">
+            <h5></h5>
+        </div>
     </section>
 
 
@@ -156,7 +171,6 @@
             // Initalize the doc id we are working with
             curDocId = sessionDocumentsInfo.lastEdited;
             this.getCurDocIndex();
-            alert(curDocIndex);
 
             // Render data in the HTML
             $('#blg-name').html(sessionDocuments[curDocIndex].DocSettings.buildingName);
@@ -178,24 +192,25 @@
         addCard: function(cardID) {
             var cardDOMID = "card_" + cardID;
 
+            this.cardCalculations();
+
             var cardIndex = this.getCardIndex(cardID);
-            alert("card index: " + cardIndex);
             var obj = 
-                '<div class="card inline-block box" id="'+ sessionDocuments[curDocId].CategoryData[cardIndex].title +'">'+
+                '<div class="card inline-block box" id="'+ cardDOMID +'">'+
                     '<div class="card-header">' +
-                            '<h5 class="card-title editable-text">' + cardDOMID + '</h5>'+
+                            '<h5 class="card-title editable-text">' + sessionDocuments[curDocId].CategoryData[cardIndex].title + '</h5>'+
                         '</div>'+
                         '<ul class="list-group list-group-flush">'+
                             '<li class="list-group-item"><span class="editable-text">'+
                                 'Time saving'+
                                 '</span>: <span class="float-right">'+
-                                    '<span id="timeSave1" class="editable-num" >0</span><span> hours</span>'+
+                                    '<span id="timeSave1" class="editable-num" >' + sessionDocuments[curDocId].CategoryData[cardIndex].timeSaving + '</span><span> hours</span>'+
                                 '</span>'+
                             '</li>'+
                             '<li class="list-group-item">'+
                                 'Value of time saved: '+
                                 '<span class="float-right">'+
-                                    '$<span id="vs1" class="valueSaved">0</span>'+
+                                    '$<span id="vs1" class="valueSaved">' + sessionDocuments[curDocId].CategoryData[cardIndex].valueTimeSaved + '</span>'+
                                 '</span>'+
                             '</li>'+
                             '<li class="list-group-item">'+
@@ -227,10 +242,12 @@
         },
         addAllCards: function() {
             for (var i = 0; i < sessionDocuments[curDocIndex].CategoryData.length; i++) {
-                // Turn the state to active
-                sessionDocuments[curDocIndex].CategoryData.cardActive = true;
-                this.addCard(sessionDocuments[curDocIndex].CategoryData.cardID);
-                localStorage.setItem("data", JSON.stringify(sessionDocuments));
+                if(sessionDocuments[curDocIndex].CategoryData[i].cardActive === true) {
+                    // Turn the state to active
+                    sessionDocuments[curDocIndex].CategoryData[i].cardActive = true;
+                    this.addCard(sessionDocuments[curDocIndex].CategoryData[i].id);
+                    // localStorage.setItem("data", JSON.stringify(sessionDocuments));
+                }
             }
             this.checkboxPrompt();
         },
@@ -241,19 +258,18 @@
                 $(".emptyInd").hide();
         },
         getCardIndex: function(cardID) {
-            alert("getCardIndex id: " + cardID);
             var tempArray = sessionDocuments[curDocIndex].CategoryData; // Get array
             console.log(tempArray);
-            alert("getCardIndex returned: " + findWithAttr(tempArray, "id", cardID));
             return findWithAttr(tempArray, "id", cardID); // Get index
+        },
+        cardCalculations: function() {
+            // When card added run calculations for it...
         }
     };
 
     var summary = {
         getAnnualSavings: function() {
             var annualSavings = 0;
-
-            // alert(findWithAttr(sessionDocuments, "id", curDocId));
 
             for (var i = 0; i < sessionDocuments[curDocIndex].CategoryData.length; i++) {
                 if (sessionDocuments[curDocIndex].CategoryData[i].cardActive) {
@@ -283,10 +299,6 @@
     }
 
     editPage.init();
-
-    function btnListeners() {
-        
-    }
 
 </script>
 </body>
