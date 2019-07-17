@@ -42,20 +42,126 @@
     <!-- Sub Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light no-print" id="nav2">
         <div class="btn-group">
+            <a href="index.html" style="float: left;"><i class="fas fa-chevron-left"></i>Back</a>
             <button title="Print"><span id="print-btn"><i class="icon-btn fas fa-print icon-med text-primary"></i></span></button>
         </div>
     </nav>
 
-    <div>
-        <h1>Preview for...</h1>
-    </div>
+    <section class="container-fluid">
+        <div class="prev-summary">
+            <h1>Preview for <span id="prev-blg-name"></span></h1>
+            <p>Total Savings: <span id="prev-total-summary"></span></p>
+            <p>Subscription Fee: <span id="prev-sub-fee"></span></p>
+            <p>Net Savings: <span id="prev-net-sum"></span></p>
+            <p>Time calc save test: <span id="Time-calc-save"></span></p>
+        </div>
+
+        <div class="prev-graph">
+
+        </div>
+
+        <div class="prev-cards">
+
+        </div>
+
+        <div class="prev-info" style="border: 1px solid red;">
+
+        </div>
+    </section>
 
 <!-- Get Data -->    
 <script src="scripts/data.js"></script>
 <!-- File needs to be created -->
-<script src="scripts/main.js"></script>
+<!-- <script src="scripts/main.js"></script> -->
 <script>
-   
+    var sessionDocuments = null;
+    var sessionDocumentsInfo = null;
+    var curDocId = null;
+    var curDocIndex = null;
+
+    var prevPage = {
+        sessionDocuments: "",
+        sessionDocumentsInfo: "",
+        
+        init: function() {
+
+            // If not stored, store in localstorage
+			if(localStorage.getItem("data") === null)
+				localStorage.setItem("data", JSON.stringify(Documents));
+			sessionDocuments = JSON.parse(localStorage.getItem("data"));
+
+			// If not stored, store the documentsData in localStorage
+			if(localStorage.getItem("docInfoData") === null)
+				localStorage.setItem("docInfoData", JSON.stringify(documentsData));
+            sessionDocumentsInfo = JSON.parse(localStorage.getItem("docInfoData"));
+            
+            // Initalize the doc id we are working with
+            curDocId = sessionDocumentsInfo.lastEdited;
+            this.getCurDocIndex();
+
+            // Render data in the HTML
+            $('#prev-blg-name').html(sessionDocuments[curDocIndex].DocSettings.buildingName);
+            // These values should be in data.js to reduce calculations
+            $('#prev-total-summary').html(summaryPrev.getAnnualSavings());
+            $('#prev-sub-fee').html(summaryPrev.getYearlySubFee());
+            $('#prev-net-sum').html(summaryPrev.getNetAnnualSavings());
+            $('#Time-calc-save').html(summaryPrev.getTimeCalcSave());
+        },
+        getCurDocIndex: function() {
+            curDocIndex = findWithAttr(sessionDocuments, "id", curDocId);
+        },
+        renderInfo: function() {
+            
+        }
+    };
+
+    var cardFunctionsPrev = {
+
+    };
+
+    var summaryPrev = {
+        getAnnualSavings: function() {
+            var annualSavings = 0;
+
+            for (var i = 0; i < sessionDocuments[curDocIndex].CategoryData.length; i++) {
+                if (sessionDocuments[curDocIndex].CategoryData[i].cardActive) {
+                    annualSavings += sessionDocuments[curDocIndex].CategoryData[i].totalSave;
+                }
+            }
+
+            return annualSavings;
+        },
+        getYearlySubFee: function() {
+            return 2 * sessionDocuments[curDocIndex].DocSettings.hourly * 12;
+        },
+
+        getNetAnnualSavings: function() {
+            return this.getAnnualSavings() - this.getYearlySubFee();
+        },
+        // Testing the evaluation function
+        getTimeCalcSave: function() {
+            var calculation = sessionDocuments[0].CategoryData[0].timeSavingCalc;
+            calculation = calculation.replace("hourly", sessionDocuments[0].DocSettings.hourly);
+            loadInfo();
+            return eval(calculation);
+        }
+    };
+
+    // Find the index given a JS object attribute and value
+	function findWithAttr(array, attr, value) {
+		for(var i = 0; i < array.length; i += 1) {
+			if(array[i][attr] === value) {
+				return i;
+			}
+		}
+		return - 1;
+    }
+
+    function loadInfo() {
+        $('.prev-info').append('<p>' + sessionDocuments[0].CategoryData[0].timeSavingCalcDesc + '</p>');
+    }
+
+    prevPage.init();
 </script>
 </body>
 </html>

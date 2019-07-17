@@ -122,7 +122,7 @@
 			
 			for (var i = 0; i < this.sessionDocuments.length; i++) {
 				domDocumentID = "domDocumentID_" + this.sessionDocuments[i].id.toString();
-				$(".document-container").prepend('<li class="document text bold" id="'+ domDocumentID + '">' + this.sessionDocuments[i].DocSettings.docName + ": " + this.sessionDocuments[i].DocSettings.buildingName + '<div class="buttons-container"><button class="btn-edit-document" title="Edit"><i class="far fa-edit"></i></button><button class="btn-delete-document"  title="Delete"><i class="fas fa-trash-alt"></i></button><button title="View"><i class="far fa-eye"></i></button></div></li>');
+				$(".document-container").prepend('<li class="document text bold" id="'+ domDocumentID + '">' + this.sessionDocuments[i].DocSettings.docName + ": " + this.sessionDocuments[i].DocSettings.buildingName + '<div class="buttons-container"><button class="btn-edit-document" title="Edit"><i class="far fa-edit"></i></button><button class="btn-delete-document"  title="Delete"><i class="fas fa-trash-alt"></i></button><button class="btn-view-document" title="View"><i class="far fa-eye"></i></button></div></li>');
 			}
 			console.log(this.sessionDocuments);
 
@@ -226,6 +226,7 @@
 			// Add event listener to newly created element - NOTE: unecessary traversal
 			$('.btn-delete-document').first().click(deleteBtnListener);
 			$('.btn-edit-document').first().click(editBtnListener);
+			$('.btn-view-document').click(prevBtnListener);
 		},
 		deleteDoc: function(toDeleteDOMID) {
 			$('#' + toDeleteDOMID).remove();
@@ -243,6 +244,13 @@
 			this.sessionDocumentsInfo.lastEdited = toRouteIDNum;
 			localStorage.setItem("docInfoData", JSON.stringify(this.sessionDocumentsInfo));
 			window.location.href = 'edit.html';
+		},
+		// This updates the last visited document's preview page
+		toRoutePrev: function(toRouteDOMId) {
+			var toRouteIDNum = returnNums(toRouteDOMId);
+			this.sessionDocumentsInfo.lastEdited = toRouteIDNum;
+			localStorage.setItem("docInfoData", JSON.stringify(this.sessionDocumentsInfo));
+			window.location.href = 'preview.html';
 		},
 		createBlgSelectList: function() {
 			var selectDiv = document.getElementById("select-list-blg");
@@ -276,7 +284,9 @@
 	// Initialize the documents page
 	Docs.init();
 
+	/************************/
 	/* LISTENERS */
+	/************************/
 	$("#createBtn").click(function(e) {
 		e.preventDefault();
 		// settings.setSettings();
@@ -290,11 +300,9 @@
 
 	$('.btn-delete-document').click(deleteBtnListener);
 
-	function returnNums(stringToClean) {
-		return Number((stringToClean).match(/\d+$/));
-	}
-
 	$('.btn-edit-document').click(editBtnListener);
+
+	$('.btn-view-document').click(prevBtnListener);
 
 	function deleteBtnListener() {
 		var $firstParent = $(this).parent();
@@ -307,6 +315,16 @@
 		var $firstParent = $(this).parent();
 		var $secondParent = $firstParent.parent();
 		Docs.toRoute($secondParent.attr('id'));
+	}
+
+	function prevBtnListener() {
+		var $firstParent = $(this).parent();
+		var $secondParent = $firstParent.parent();
+		Docs.toRoutePrev($secondParent.attr('id'));
+	}
+
+	function returnNums(stringToClean) {
+		return Number((stringToClean).match(/\d+$/));
 	}
 
 </script>
