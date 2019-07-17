@@ -3,39 +3,249 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-
   <title>Custom App Images</title>
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
-
-  <link rel="stylesheet" href="styles.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-storage.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!-- Dropbox api -->
+  <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="tlvf8xcd30wdyaf"></script>
+  <!-- Jquery -->
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+  <style>
+    /* .thumbnail {
+      width: 300px;
+      border: solid 0.5px #414141;
+      padding: 5px;
+      border-radius: 5px;
+    } */
+  </style>
 </head>
 
 <body>
+  <div class="container">
     <h1>Custom App Images</h1>
-    <input type="file" onchange="previewFile()"><br>
-    <img src="" height="200" alt="Image preview...">
-  <script>
-    // Author: Leonid Uvarov
+    <h5>1. App Icon</h5>
+    <form action="#">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>File</span>
+            <input type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" id="app-icon" type="text" onchange="previewFile()">
+          </div>
+        </div>
+      </form>
+    <img src="" class="thumbnail" alt="Image preview...">
 
-    function previewFile(){
-        var preview = document.querySelector('img'); //selects the query named img
-        var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-        var reader  = new FileReader();
+    <h5>2. Splash screen 9-patch image with the following resolution</h5>
+    <form action="#">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>File</span>
+            <input type="file" multiple>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Upload one or more files" onchange="">
+          </div>
+        </div>
+      </form>
+    <img src="" class="thumbnail" alt="Image preview...">
 
-        reader.onloadend = function () {
-            preview.src = reader.result;
-        }
+    <h5>3. Login screentop logo 1x9 SVG image</h5>
+    
+    <form action="#">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>File</span>
+          <input type="file">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" id="app-icon" type="text" onchange="">
+        </div>
+      </div>
+    </form>
+    <img src="" class="thumbnail" height="200" alt="Image preview...">
 
-        if (file) {
-            reader.readAsDataURL(file); //reads the data as a URL
-        } else {
-            preview.src = "";
-        }
+    <form action="#">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>File</span>
+            <input type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" id="app-icon" type="text" onchange="">
+          </div>
+        </div>
+    </form>
+    <img src="" class="thumbnail" height="200" alt="Image preview...">
+
+    <p>Downloaded image</p>
+    <button class="btn" onclick="downloadFromCloud('app-icon')">Download image</button>
+    <img id="app-icon-image">
+
+    <p>Dropbox</p>
+    <a href="" class="dropbox-saver" id="dropbox-saver-id">Dropbox</a>
+    <div id="container"></div>
+  </div>
+
+<script>
+// Author: Leonid Uvarov
+// NOTES: Create function for validateDimensions
+
+// FIREBASE STORAGE
+// Your web app's Firebase configuration
+var firebaseConfig = {
+apiKey: "AIzaSyBLfWdcEoARKEdbvya0evqMHRBPtzAk1sc",
+authDomain: "image-upload-46ec6.firebaseapp.com",
+databaseURL: "https://image-upload-46ec6.firebaseio.com",
+projectId: "image-upload-46ec6",
+storageBucket: "image-upload-46ec6.appspot.com",
+messagingSenderId: "820672852461",
+appId: "1:820672852461:web:bc97989838fc9702"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+function previewFile(){
+  var preview = document.querySelector('img'); //selects the query named img
+  var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+  alert(file.type);
+  var reader  = new FileReader();
+  reader.onload = function (e) {
+
+    //Initiate the JavaScript Image object.
+    var image = new Image();
+    //Set the Base64 string return from FileReader as source.
+    image.src = e.target.result;
+
+    //Validate the File Height and Width.
+    image.onload = function () {
+      var height = this.height;
+      var width = this.width;
+      if (height > 500 || width > 500) {
+          alert("Height and Width must not exceed 100px.");
+          
+          return false;
+      }
+      alert("Uploaded image has valid Height and Width.");
+      uploadToCloud(file, "app-icon");
+      preview.src = reader.result;
+      validateImageApp.dropbox();
+
+      return true;
+    };
+  }
+
+  if (file) {
+      reader.readAsDataURL(file); //reads the data as a URL
+  } else {
+      preview.src = "";
+  }
+}
+
+function uploadToCloud(image, name){
+  // Create a storage reference
+  var storageRef = firebase.storage().ref('images/' + name);
+  // Convert to blob
+  //var blob = new Blob([src], { type: "image/jpeg" });
+  // Upload file - 
+  var task = storageRef.put(image);
+
+  task.on('state_changed', 
+    function progress(snapshot) {
+
+    },
+    function error(err) {
+
+    },
+
+    function complete() {
+
     }
+  )
+}
 
-    previewFile();  //calls the function named previewFile()
-  </script>
+function downloadFromCloud(name) {
+  var storage = firebase.storage();
+  var pathReference = storage.ref('images/app-icon');
+  
+  pathReference.getDownloadURL().then(function(url) {
+    $('#app-icon-image').attr('src', url);
+    // Bind url to dropbox button
+    $('#dropbox-saver-id').attr('src', url);
+  }).catch(function(error) {
+    switch (error.code) {
+    case 'storage/object-not-found':
+      // File doesn't exist
+      break;
+
+    case 'storage/unauthorized':
+      // User doesn't have permission to access the object
+      break;
+
+    case 'storage/canceled':
+      // User canceled the upload
+      break;
+    case 'storage/unknown':
+      // Unknown error occurred, inspect the server response
+    break;
+    }
+  });
+}
+
+function dropbox() {
+  var options = {
+    files: [
+        // You can specify up to 100 files.
+        {'url': 'https://dl.dropboxusercontent.com/s/deroi5nwm6u7gdf/advice.png', 'filename': 'filename'},
+    ],
+
+    // Success is called once all files have been successfully added to the user's
+    // Dropbox, although they may not have synced to the user's devices yet.
+    success: function () {
+        // Indicate to the user that the files have been saved.
+        alert("Success! Files saved to your Dropbox.");
+    },
+
+    // Progress is called periodically to update the application on the progress
+    // of the user's downloads. The value passed to this callback is a float
+    // between 0 and 1. The progress callback is guaranteed to be called at least
+    // once with the value 1.
+    progress: function (progress) {},
+
+    // Cancel is called if the user presses the Cancel button or closes the Saver.
+    cancel: function () {},
+
+    // Error is called in the event of an unexpected response from the server
+    // hosting the files, such as not being able to find a file. This callback is
+    // also called if there is an error on Dropbox or if the user is over quota.
+    error: function (errorMessage) {}
+};
+var button = Dropbox.createSaveButton(options);
+document.getElementById("container").appendChild(button);
+}
+
+// Controlls functionality of app
+validateImageApp = {
+  urlArray: [],
+  
+  pushUrlArray: function() {
+
+  },
+  validateImg: function() {
+
+  }
+};
+
+//dropbox();
+</script>
 </body>
 </html>
